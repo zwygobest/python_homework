@@ -61,6 +61,7 @@ def print_keyboard(keyboard):
         print("| {} |".format(row))
     print("---------")
 
+print()
 
 # 用户输入
 userinput = input("Enter a string to type: ")
