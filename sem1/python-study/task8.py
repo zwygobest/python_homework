@@ -36,6 +36,7 @@ def generate_actions(keyboard,str):
     return action
 
 def count_moves(actions):
+    #  remove 'p' in the string and then count the total step
     return len(actions.replace("p",""))
 
 def best_keyboard(string):
