@@ -6,7 +6,7 @@ keyboards = [
         ["bemix", "vozhd", "grypt", "clunk", "waqfs"]
     ]
 
-def find_position(keyborad,char):
+def find_char_position(keyborad,char):
 #     find the index of char
     for r,row in enumerate(keyborad):
         if char in row:
@@ -17,27 +17,31 @@ def generate_actions(keyboard,str):
     action = ""
     pos = (0,0)
     for element in str:
-        tar_pos = find_position(keyboard,element)
+        tar_pos = find_char_position(keyboard,element)
         if tar_pos is  None:
             return None
         r1 , c1 = pos
         r2 , c2 = tar_pos
 #         turn right
-        action += 'r' * max(0, c2 - c1)
+        if (c2 > c1):
+            action += 'r' * (c2 - c1)
 #         move left
-        action += 'l' * max(0, c1 - c2)
+        elif (c2 < c1):
+            action += 'l' * (c1 - c2)
 #         move down
-        action += 'd' * max(0, r2 - r1)
+        if (r2 > r1):
+            action += 'd' * (r2 - r1)
 #         move up
-        action += 'u' * max(0, r1 - r2)
+        elif (r2 < r1):
+            action += 'u' * (r1 - r2)
         action += 'p'
         pos = tar_pos
     #     计算出 一个字符串的总路径
     return action
 
-def count_moves(actions):
-    #  remove 'p' in the string and then count the total step
-    return len(actions.replace("p",""))
+# def count_moves(actions):
+#     #  remove 'p' in the string and then count the total step
+#     return len(actions.replace("p",""))
 
 def best_keyboard(string):
     """选择最优的键盘配置"""
@@ -48,7 +52,7 @@ def best_keyboard(string):
     for i,kb in enumerate(keyboards):
         actions = generate_actions(kb,string)
         if actions is not None:
-            moves = count_moves(actions)
+            moves = len(actions.replace("p",""))
             if moves < min_move:
                 min_move = moves
                 best_actions = actions
